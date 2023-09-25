@@ -35,8 +35,20 @@ public class ProjectSecurityConfig {
         http.securityContext((context) -> context.requireExplicitSave(false))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .authorizeRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
+                        .requestMatchers("/myBalance").hasAnyAuthority("VIEWACCOUNT","VIEWBALANCE")
+                        .requestMatchers("/myCards").hasAuthority("VIEWCARD")
+                        .requestMatchers("/myLoans").hasAuthority("VIEWLOANS")
+
+
+                        .requestMatchers("/myAccount").hasRole("USER")
+                        .requestMatchers("/myBalance").hasAnyRole("USER","ADMIN")
+                        .requestMatchers("/myCards").hasRole("USER")
+                        .requestMatchers("/myLoans").hasRole("USER")
+
+
                         .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards", "/user").authenticated()
-                        .requestMatchers("/notices", "/contact", "/register", "/contactus").permitAll()
+                        .requestMatchers("/notices", "/contact", "/register", "/contactus","/signIn").permitAll()
                         .anyRequest().denyAll());
         http.csrf(csrf -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/contact", "/register", "/contactus")
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));

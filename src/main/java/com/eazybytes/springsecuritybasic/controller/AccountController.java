@@ -24,6 +24,7 @@ public class AccountController {
             // you can return the first one.
             return accountsList.get(0);
         } else {
+            System.out.println("NO Accounts");
             // Handle the case where no account is found.
             // You can return null, throw an exception, or return an error message.
             return null;

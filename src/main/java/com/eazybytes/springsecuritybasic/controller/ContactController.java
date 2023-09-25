@@ -14,6 +14,7 @@ public class ContactController {
     private  ContactRepository contactRepository;
     @GetMapping("/contact")
     public String saveContactInquiryDetails(){
+
         return "Here are the contact details fronm DB";
     }
 

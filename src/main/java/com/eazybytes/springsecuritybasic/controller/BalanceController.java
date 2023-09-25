@@ -1,29 +1,32 @@
-//package com.eazybytes.springsecuritybasic.controller;
-//
-//import com.eazybytes.springsecuritybasic.Repository.AccountsRepository;
-//import com.eazybytes.springsecuritybasic.modal.Accounts;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import java.util.List;
-//
-//@RestController
-//public class BalanceController {
-//    AccountsRepository accountsRepository;
-//
-//    @GetMapping("/myBalance")
-//    public Accounts getAccountDetails(@RequestParam int id) {
-//        List<Accounts> accountsList = accountsRepository.findByCustomer_id(id);
-//
-//        if (!accountsList.isEmpty()) {
-//            // If there are multiple accounts with the same customer ID,
-//            // you can return the first one.
-//            return accountsList.get(0);
-//        } else {
-//            // Handle the case where no account is found.
-//            // You can return null, throw an exception, or return an error message.
-//            return null;
-//        }
-//    }
-//}
+package com.eazybytes.springsecuritybasic.controller;
+
+
+import java.util.List;
+
+import com.eazybytes.springsecuritybasic.Repository.AccountTransactionsRepository;
+import com.eazybytes.springsecuritybasic.modal.Account_transactions;
+import com.eazybytes.springsecuritybasic.modal.Customer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+
+
+@RestController
+public class BalanceController {
+
+    @Autowired
+    private AccountTransactionsRepository accountTransactionsRepository;
+
+    @PostMapping("/myBalance")
+    public List<Account_transactions> getBalanceDetails(@RequestBody Customer customer) {
+        List<Account_transactions> accountTransactions = accountTransactionsRepository.
+                findByCustomerCustomerIdOrderByTransactionDateDesc(customer.getCustomerId());
+        if (accountTransactions != null ) {
+            return accountTransactions;
+        }else {
+            return null;
+        }
+    }
+}

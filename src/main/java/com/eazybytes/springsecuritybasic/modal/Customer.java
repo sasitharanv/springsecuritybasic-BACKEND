@@ -1,8 +1,10 @@
 
 package com.eazybytes.springsecuritybasic.modal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity(name="Customer")
 public class Customer {
@@ -22,7 +24,17 @@ public class Customer {
 
     private Date createDate;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer",fetch=FetchType.EAGER)
+    private Set<Authority> authorities;
 
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
 
     public long getCustomerId() {
         return customerId;
